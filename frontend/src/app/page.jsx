@@ -1,7 +1,11 @@
 "use client";
-import React from "react";
+import { React, useState, useCallback } from "react";
+import ChatSidebar from "../components/chat-sidebar"; 
+import MessageInput from "../components/message-input"; 
+import ChatMessage from "../components/chat-message"; 
 
-function MainComponent() {
+
+function Page() {
   const [chats, setChats] = useState([
     { id: "1", title: "Home renovation ideas" },
     { id: "2", title: "Kitchen remodeling costs" },
@@ -121,4 +125,4 @@ function MainComponent() {
   );
 }
 
-export default MainComponent;
+export default Page;
