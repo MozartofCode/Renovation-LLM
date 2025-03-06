@@ -8,12 +8,13 @@ import base64
 from openai import OpenAI
 import os
 from dotenv import load_dotenv
-
-openai_api_key = os.getenv('OPENAI_API_KEY')
-dataset_path = os.getenv("DATASET_PATH")
 load_dotenv()
 
+openai_api_key = os.getenv('OPENAI_API_KEY')
+dataset_path = os.environ.get("DATASET_PATH")
+
 client = OpenAI()
+
 
 def process_image(image_path):
 
@@ -46,4 +47,42 @@ def process_image(image_path):
     )
 
     return response.choices[0].message.content
+
+
+
+# This function iterates over the downloaded Kaggle folder
+# and returns a list of image files
+def process_kaggle():
+
+    # Get all files inside the dataset path (including subdirectories)
+    file_list = []
+    for root, dirs, files in os.walk(dataset_path):
+        for file in files:
+            if file[len(file)-3:] == "jpg":
+                file_list.append(os.path.join(root, file))
+
+    return file_list
+
+
+
+def prepare_sql_database():
+
+    file_list = process_kaggle()
+
+    try:
+        for image_path in file_list:
+            description = process_image(image_path)
+
+            # ADD the description and the image URL to SQL database
+
+    except:
+        print("Error occured while trying to process images...")
+
+    finally:
+        print("Image processing is completed. Check your SQL...")
+
+
+
+    
+
 

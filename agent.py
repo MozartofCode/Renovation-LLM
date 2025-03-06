@@ -7,11 +7,11 @@
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
+load_dotenv()
 
 openai_api_key = os.getenv('OPENAI_API_KEY')
 dataset_path = os.getenv("DATASET_PATH")
 
-load_dotenv()
 client = OpenAI()
 
 
