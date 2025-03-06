@@ -11,15 +11,16 @@ from openai import OpenAI
 
 openai_api_key = os.getenv('OPENAI_API_KEY')
 load_dotenv()
+client = OpenAI()
 
-def gpt_call(role, prompt):
 
-    client = OpenAI()
+def gpt_call(prompt):
+
     completion = client.chat.completions.create(
         model="gpt-4o",
         store=True,
         messages=[
-            {"role": role, "content": prompt}
+            {"role": "user", "content": prompt}
         ]
     )
 
@@ -27,8 +28,20 @@ def gpt_call(role, prompt):
     return message_content
 
 
+def generate_image(prompt):
+
+    response = client.images.generate(
+    model="dall-e-3",
+    prompt= prompt,
+    size="1024x1024",
+    quality="standard",
+    n=1,
+)
+    print(response)
+    return response.data[0].url
 
 
+print(generate_image("A white cat"))
 
 
 
