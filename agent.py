@@ -4,12 +4,13 @@
 #
 #
 
-
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
 
 openai_api_key = os.getenv('OPENAI_API_KEY')
+dataset_path = os.getenv("DATASET_PATH")
+
 load_dotenv()
 client = OpenAI()
 
@@ -39,12 +40,4 @@ def generate_image(prompt):
 )
     print(response)
     return response.data[0].url
-
-
-print(generate_image("A white cat"))
-
-
-
-
-
 
