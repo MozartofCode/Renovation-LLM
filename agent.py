@@ -50,7 +50,6 @@ def generate_image(prompt):
     quality="standard",
     n=1,
 )
-    print(response)
     return response.data[0].url
 
 
@@ -112,7 +111,7 @@ def run_sql_commands(sql_commands):
         user="postgres",
         password=postgres_password,
         host="localhost",
-        port="5000"  
+        port="5000"
     )
 
     cursor = conn.cursor()
@@ -123,7 +122,6 @@ def run_sql_commands(sql_commands):
         for command in sql_commands:
             cursor.execute(command)
             results = cursor.fetchall()
-            print(f"Results for command: {command}")
             descriptions.append(results)
 
     except Exception as e:

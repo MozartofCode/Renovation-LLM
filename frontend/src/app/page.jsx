@@ -38,19 +38,23 @@ function Page() {
     ]);
 
     try {
-      const response = await fetch('http://localhost:6000/api/chat', {
+      const response = await fetch('http://localhost:8000/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ message: message }),
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        const errorText = await response.text();
+        console.error('Server error:', errorText);
+        throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();
+      console.log('Received response:', data);
       
       // Update the last message (loading message) with the actual response
       setMessages((prev) => {
@@ -69,7 +73,7 @@ function Page() {
         const newMessages = [...prev];
         newMessages[newMessages.length - 1] = {
           type: "assistant",
-          content: "Sorry, I encountered an error processing your request. Please make sure the backend server is running.",
+          content: `Error: ${error.message}.`,
         };
         return newMessages;
       });
