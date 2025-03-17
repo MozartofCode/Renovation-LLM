@@ -16,6 +16,10 @@ dataset_path = os.environ.get("DATASET_PATH")
 client = OpenAI()
 
 
+# This function processes the design image and returns the description
+# 
+#
+#
 def process_image(image_path):
 
     image_path = image_path
@@ -63,6 +67,16 @@ def process_kaggle():
 
     return file_list
 
+
+
+# Possible SQL database schema
+# Image_url
+# Image_description
+#
+# Room_type
+# Price
+# Color
+# Style
 
 
 def prepare_sql_database():

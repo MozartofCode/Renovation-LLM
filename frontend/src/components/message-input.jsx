@@ -51,10 +51,29 @@ function MessageInput({
           <button
             type="submit"
             disabled={!message.trim() || disabled}
-            className="p-2 rounded-lg bg-blue-500 hover:bg-blue-600 disabled:bg-gray-300 dark:disabled:bg-gray-600 transition-colors"
+            className={`p-2 rounded-lg transition-colors flex items-center justify-center w-8 h-8 ${
+              message.trim() && !disabled
+                ? 'bg-blue-500 hover:bg-blue-600'
+                : 'bg-gray-300 dark:bg-gray-600 cursor-not-allowed'
+            }`}
             aria-label="Send message"
           >
-            <i className="fas fa-paper-plane text-white" />
+            <svg
+              viewBox="0 0 24 24"
+              className={`w-4 h-4 transform rotate-90 transition-transform ${
+                message.trim() && !disabled ? 'text-white' : 'text-gray-400'
+              }`}
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M7 11L12 6L17 11M12 18V7"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
           </button>
         </div>
       </div>
