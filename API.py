@@ -6,6 +6,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
 from dotenv import load_dotenv
+from workflow import start_workflow
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -24,11 +25,13 @@ def chat():
         if not user_message:
             return jsonify({'error': 'No message provided'}), 400
 
-        # TODO: Add your AI function calls here
-        # For now, we'll return a mock response
+        # Call the workflow function to get the generated image URL
+        image_url = start_workflow(user_message)
+        
         response = {
-            'message': 'I understand your request about: ' + user_message,
-            'imageUrl': 'https://placehold.co/600x400'  # Using a placeholder image for testing
+            'message': 'I understand your request about: ' + user_message + ' and I will generate an image for you. \
+                Please wait a moment...',
+            'imageUrl': image_url
         }
         
         return jsonify(response), 200

@@ -80,7 +80,7 @@ def analyze_requirements(user_prompt):
 # on the room type, price, color, and style
 # :param requirements: A lsit of requirements from the user
 # :return: A list of SQL commands
-def generate_sql_command(requirements):
+def generate_sql_commands(requirements):
         
     background = f"You are a professional software engineer who is main job is writing SQL commands to get information from a database \
         You are given a bunch of requirements: [{requirements}] and you are given the task to return a list of SQL commands \

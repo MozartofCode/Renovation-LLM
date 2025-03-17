@@ -1,13 +1,13 @@
 # @ Author: Bertan Berker
 # @ language: Python
-#
-#
-#
+# This file contains the workflow for the agentic system that is used to generate a renovation image
+
+from agent import *
 
 # This functions is the main workflow for the agentic system
 # :param user_prompt: The prompt from the user
 # :return: The generated image
-def workflow(user_prompt):
+def start_workflow(user_prompt):
 
     # 1. Process the user_prompt for keywords related to design style like
     # Room_type, Price, Color, Style
@@ -16,4 +16,10 @@ def workflow(user_prompt):
     # to create a renovation image prompt
     # 4. Finally generate a new image
 
-    return
+    requirements = analyze_requirements(user_prompt)
+    sql_commands = generate_sql_commands(requirements)
+    image_descriptions = run_sql_commands(sql_commands)
+    description = generate_description(image_descriptions, user_prompt)
+    image_url = generate_image(description) 
+    
+    return image_url
