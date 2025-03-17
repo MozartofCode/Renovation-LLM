@@ -26,16 +26,54 @@ function Page() {
     setMessages([]);
   }, []);
 
-  const handleSubmit = useCallback((message) => {
+  const handleSubmit = useCallback(async (message, imageUrl) => {
+    // First add the user message and a loading message
     setMessages((prev) => [
       ...prev,
       { type: "user", content: message },
       {
         type: "assistant",
-        content:
-          "I'm RenovateGPT, your home renovation assistant. How can I help you today?",
+        content: "I'm processing your request...",
       },
     ]);
+
+    try {
+      const response = await fetch('http://localhost:5000/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: message }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      
+      // Update the last message (loading message) with the actual response
+      setMessages((prev) => {
+        const newMessages = [...prev];
+        newMessages[newMessages.length - 1] = {
+          type: "assistant",
+          content: data.message,
+          imageUrl: data.imageUrl,
+        };
+        return newMessages;
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      // Update the last message to show the error
+      setMessages((prev) => {
+        const newMessages = [...prev];
+        newMessages[newMessages.length - 1] = {
+          type: "assistant",
+          content: "Sorry, I encountered an error processing your request.",
+        };
+        return newMessages;
+      });
+    }
   }, []);
 
   const handleFileSelect = useCallback((file) => {

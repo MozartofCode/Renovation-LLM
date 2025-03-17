@@ -19,10 +19,10 @@ function MessageInput({
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (message.trim() && onSubmit) {
-      onSubmit(message);
+      onSubmit(message.trim());
       setMessage("");
       if (textareaRef.current) {
         textareaRef.current.style.height = "inherit";
