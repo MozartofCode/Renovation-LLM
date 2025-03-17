@@ -1,4 +1,4 @@
-# 🏡 Renovation-LLM – AI-Powered Interior Design Assistant  
+# Renovation-LLM – AI-Powered Interior Design Assistant  
 
 **An AI-powered tool that assists interior designers and architects by analyzing real-world renovation datasets and generating high-quality design visuals based on user prompts.**  
 
