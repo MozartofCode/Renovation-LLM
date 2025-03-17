@@ -6,10 +6,12 @@
 import os
 from dotenv import load_dotenv
 from openai import OpenAI
+import psycopg2 
 load_dotenv()
 
 openai_api_key = os.getenv('OPENAI_API_KEY')
 dataset_path = os.getenv("DATASET_PATH")
+postgres_password = os.getenv("POSTGRES_PASSWORD")
 
 client = OpenAI()
 
@@ -85,8 +87,8 @@ def generate_sql_commands(requirements):
     background = f"You are a professional software engineer who is main job is writing SQL commands to get information from a database \
         You are given a bunch of requirements: [{requirements}] and you are given the task to return a list of SQL commands \
         that can be used to get the information from the database based on these requirements. The commands should be in the form of a SELECT statement. \
-        Additionally, get information that satisfies one or more of the requirements. Preferably the ones that satisfies the most of the requirements. \
-            I want the top 5 results in the form of a list of SQL commands. And I don't want any other text than the list of SQL commands."
+        Additionally, get information that satisfies one or more of the requirements. I want you to return the 'image_description' column of the results. \
+            For example: SELECT image_description FROM renovation_photos WHERE room_type = 'Kitchen' AND price = 1000 AND color = 'blue' AND style = 'modern' etc."
 
     completion = client.chat.completions.create(
         model="gpt-4o",
@@ -105,10 +107,31 @@ def generate_sql_commands(requirements):
 # :return: A list of image descriptions from the SQL database
 def run_sql_commands(sql_commands):
 
-    for command in sql_commands:
-        print(command)
+    conn = psycopg2.connect(
+        dbname="renovation_db",
+        user="postgres",
+        password=postgres_password,
+        host="localhost",
+        port="5000"  
+    )
 
-    # TODO: Run the SQL commands and get the results
-    # TODO: Return the results
+    cursor = conn.cursor()
 
-    return
+    descriptions = []
+    
+    try:
+        for command in sql_commands:
+            cursor.execute(command)
+            results = cursor.fetchall()
+            print(f"Results for command: {command}")
+            descriptions.append(results)
+
+    except Exception as e:
+        print(f"Fatal error in database operation: {str(e)}")
+        conn.rollback()
+
+    finally:
+        cursor.close()
+        conn.close()
+
+    return descriptions
