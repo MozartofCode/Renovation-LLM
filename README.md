@@ -7,3 +7,6 @@ import kagglehub
 
 # Download latest version
 path = kagglehub.dataset_download("luznoc/synthetic-dataset-for-home-interior")
+
+
+PostgreSQL

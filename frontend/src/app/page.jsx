@@ -26,19 +26,19 @@ function Page() {
     setMessages([]);
   }, []);
 
-  const handleSubmit = useCallback(async (message, imageUrl) => {
+  const handleSubmit = useCallback(async (message) => {
     // First add the user message and a loading message
     setMessages((prev) => [
       ...prev,
       { type: "user", content: message },
       {
         type: "assistant",
-        content: "I'm processing your request...",
+        content: "I'm processing your request and generating an image...",
       },
     ]);
 
     try {
-      const response = await fetch('http://localhost:5000/api/chat', {
+      const response = await fetch('http://localhost:6000/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ function Page() {
         const newMessages = [...prev];
         newMessages[newMessages.length - 1] = {
           type: "assistant",
-          content: "Sorry, I encountered an error processing your request.",
+          content: "Sorry, I encountered an error processing your request. Please make sure the backend server is running.",
         };
         return newMessages;
       });

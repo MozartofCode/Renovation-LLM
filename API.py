@@ -25,12 +25,11 @@ def chat():
         if not user_message:
             return jsonify({'error': 'No message provided'}), 400
 
-        # Call the workflow function to get the generated image URL
+        # Call the workflow function to process the message and get image URL
         image_url = start_workflow(user_message)
         
         response = {
-            'message': 'I understand your request about: ' + user_message + ' and I will generate an image for you. \
-                Please wait a moment...',
+            'message': 'I have generated a renovation image based on your request.',
             'imageUrl': image_url
         }
         
@@ -41,5 +40,5 @@ def chat():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    print("Server starting on http://localhost:5000")  # Add startup message
-    app.run(debug=True, port=5000)
+    print("Server starting on http://localhost:6000")
+    app.run(debug=True, port=6000)
