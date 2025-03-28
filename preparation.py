@@ -8,10 +8,10 @@ import os
 from dotenv import load_dotenv
 import psycopg2
 import json
+import kagglehub
 load_dotenv()
 
 openai_api_key = os.getenv('OPENAI_API_KEY')
-dataset_path = os.environ.get("DATASET_PATH")
 postgres_password = os.environ.get("POSTGRES_PASSWORD")
 
 client = OpenAI()
@@ -25,6 +25,14 @@ class ImageAnalysis(BaseModel):
     price: int
     color: str
     style: str
+
+
+# This function downloads the Kaggle interior design dataset and returns the path
+# :return: dataset_path
+def download_dataset():
+    dataset_path = kagglehub.dataset_download("luznoc/synthetic-dataset-for-home-interior")
+    return dataset_path
+
 
 # This function processes the design image and returns the description
 # :param image_path: The path to the image file
@@ -90,7 +98,7 @@ def process_image(image_path):
 # This function iterates over the downloaded Kaggle folder
 # and returns a list of image files
 # :return: A list of image files
-def process_kaggle():
+def process_kaggle(dataset_path):
 
     # Get all files inside the dataset path (including subdirectories)
     file_list = []
@@ -116,7 +124,9 @@ def prepare_sql_database():
 
     cursor = conn.cursor()
     
-    file_list = process_kaggle()
+    dataset_path = download_dataset()
+    file_list = process_kaggle(dataset_path)
+    
     print(f"Found {len(file_list)} images to process")
 
     try:
